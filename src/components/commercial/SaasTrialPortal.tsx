@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { ArrowRight, BarChart3, Check, CreditCard, Headphones, Instagram, LockKeyhole, ShieldCheck, Users } from 'lucide-react';
+import { ArrowRight, BarChart3, Check, CreditCard, Headphones, Instagram, LockKeyhole, Settings, ShieldCheck, Users } from 'lucide-react';
 import { startMercadoPagoCheckout } from '../../services/checkoutService';
 import { TrialRequestForm } from './TrialRequestForm';
 import {trackMarketingEvent} from '../../services/marketingAnalytics';
@@ -77,7 +77,7 @@ export function SaasTrialPortal() {
           <a href="#recursos" className="hover:text-white">Recursos</a><a href="#trial" className="hover:text-white">Trial</a><a href="#planos" className="hover:text-white">Planos</a><a href="#seguranca" className="hover:text-white">Segurança</a>
           <a href="https://www.instagram.com/grit.solucoes/" target="_blank" rel="noreferrer" onClick={()=>trackMarketingEvent('cta_instagram',{placement:'header'})} className="inline-flex items-center gap-1.5 hover:text-orange-300"><Instagram size={16}/>@grit.solucoes</a>
         </nav>
-        <a href="#planos" className="rounded-xl bg-[#FF8500] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#E07500]">Conhecer planos</a>
+        <div className="flex items-center gap-2"><a href="/app" className="hidden rounded-xl border border-white/20 px-4 py-2.5 text-sm font-bold text-white hover:bg-white/5 sm:inline-flex">Entrar no SAC</a><a href="#planos" className="rounded-xl bg-[#FF8500] px-4 py-2.5 text-sm font-bold text-white hover:bg-[#E07500]">Conhecer planos</a></div>
       </div>
     </header>
 
@@ -89,7 +89,7 @@ export function SaasTrialPortal() {
             <span className="inline-flex rounded-full border border-orange-400/30 bg-orange-400/10 px-3 py-1 text-xs font-bold text-orange-300">Lançamento GRIT • somente 5 vagas promocionais</span>
             <h1 className="mt-6 max-w-4xl text-4xl font-black tracking-tight md:text-6xl">Seu SAC mais inteligente com <span className="text-[#FF8500]">50% de desconto</span> por 1 ano.</h1>
             <p className="mt-6 max-w-2xl text-lg leading-8 text-slate-300">Centralize chamados, assistência técnica, qualidade, logística, documentos, evidências e indicadores em uma plataforma preparada para importadores, distribuidores, indústrias e fabricantes.</p>
-            <div className="mt-8 flex flex-wrap gap-3"><a href="#trial" className="inline-flex items-center gap-2 rounded-xl bg-[#FF8500] px-6 py-3 font-bold text-white hover:bg-[#E07500]">Garantir minha vaga <ArrowRight size={18}/></a><a href="#oferta" className="rounded-xl border border-white/20 px-6 py-3 font-semibold hover:bg-white/5">Ver oferta de lançamento</a></div>
+            <div className="mt-8 flex flex-wrap gap-3"><a href="#trial" className="inline-flex items-center gap-2 rounded-xl bg-[#FF8500] px-6 py-3 font-bold text-white hover:bg-[#E07500]">Garantir minha vaga <ArrowRight size={18}/></a><a href="/app" className="inline-flex items-center gap-2 rounded-xl border border-white/20 px-6 py-3 font-semibold hover:bg-white/5"><Headphones size={18}/> Já sou cliente</a></div>
             <p className="mt-4 flex items-center gap-2 text-xs text-slate-400"><CreditCard size={15}/> Pagamento por link seguro. O SAC 4.0 não armazena dados de cartão.</p>
           </div>
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-2xl shadow-orange-950/30">
@@ -125,6 +125,6 @@ export function SaasTrialPortal() {
 
       <section id="seguranca" className="border-t border-white/10 bg-slate-900/50 px-5 py-16"><div className="mx-auto grid max-w-7xl gap-8 md:grid-cols-[.8fr_1.2fr]"><div><span className="grid h-12 w-12 place-items-center rounded-xl bg-emerald-400/10 text-emerald-300"><LockKeyhole/></span><h2 className="mt-5 text-3xl font-black">Segurança desde a arquitetura</h2><p className="mt-3 text-slate-400">Cada empresa acessa somente seus próprios dados, com autenticação, trilha de auditoria e políticas no banco.</p></div><div className="grid gap-3 sm:grid-cols-2">{['Isolamento multiempresa (RLS)','Controle de acesso por função','HTTPS e conteúdo protegido','Auditoria de alterações','Backups e continuidade','Adequação progressiva à LGPD'].map(item=><div key={item} className="flex items-center gap-3 rounded-xl border border-white/10 bg-slate-950 p-4"><ShieldCheck className="text-emerald-400" size={19}/><span className="text-sm font-semibold">{item}</span></div>)}</div></div></section>
     </main>
-    <footer className="border-t border-white/10 px-5 py-8 text-center text-xs text-slate-500"><p>© {new Date().getFullYear()} SAC 4.0 • Comercial: gritsolucoes@gmail.com</p><a href="https://www.instagram.com/grit.solucoes/" target="_blank" rel="noreferrer" onClick={()=>trackMarketingEvent('cta_instagram',{placement:'footer'})} className="mt-3 inline-flex items-center gap-2 font-bold text-orange-300"><Instagram size={16}/>Siga @grit.solucoes</a></footer>
+    <footer className="border-t border-white/10 px-5 py-8 text-center text-xs text-slate-500"><p>© {new Date().getFullYear()} SAC 4.0 • Comercial: gritsolucoes@gmail.com</p><div className="mt-3 flex flex-wrap justify-center gap-4"><a href="/app" className="inline-flex items-center gap-2 font-bold text-slate-300"><Headphones size={16}/>Acesso do cliente</a><a href="/admin" className="inline-flex items-center gap-2 font-bold text-slate-400"><Settings size={16}/>Central gerencial</a><a href="https://www.instagram.com/grit.solucoes/" target="_blank" rel="noreferrer" onClick={()=>trackMarketingEvent('cta_instagram',{placement:'footer'})} className="inline-flex items-center gap-2 font-bold text-orange-300"><Instagram size={16}/>Siga @grit.solucoes</a></div></footer>
   </div>;
 }

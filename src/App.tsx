@@ -37,30 +37,32 @@ import { usageAnalytics } from './services/usageAnalytics';
 export default function App() {
   const isSaasTrialHost = typeof window !== 'undefined' &&
     window.location.hostname.toLowerCase() === 'apps.sactrial.gritnews.com.br';
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname.toLowerCase() : '/';
   const isCommercialTrialAdmin = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('commercial-trials');
   const isCommercialOrderAdmin = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('commercial-orders');
   const isCommercialAlertsAdmin = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('commercial-alerts');
   const isCommercialCustomersAdmin = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('commercial-customers');
   const isMarketingAnalyticsAdmin = typeof window !== 'undefined' && window.location.pathname.toLowerCase().includes('marketing-analytics');
-  const isPlatformAdmin = typeof window !== 'undefined' && /^\/admin\/?$/.test(window.location.pathname.toLowerCase());
+  const isPlatformAdmin = /^\/admin\/?$/.test(currentPath);
   const isDedicatedSacHost = typeof window !== 'undefined' &&
     window.location.hostname.toLowerCase() === 'apps.sacproh.gritnews.com.br';
 
   // O domínio dedicado deve abrir diretamente o SAC, mesmo usando a rota raiz (/).
-  const isSacProhPath = typeof window !== 'undefined' && (
+  const isCustomerAppPath = typeof window !== 'undefined' && (
     isDedicatedSacHost ||
-    window.location.pathname.toLowerCase().includes('sacproh') || 
+    /^\/app\/?$/.test(currentPath) ||
+    currentPath.includes('sacproh') ||
     window.location.hash.toLowerCase().includes('sacproh') ||
     window.location.search.toLowerCase().includes('sacproh')
   );
 
   // Portal vs SAC App Mode ('portal' for gritnews.com.br, 'app' for gritnews.com.br/sacproh)
-  const [appMode, setAppMode] = useState<'portal' | 'app'>(isSacProhPath ? 'app' : 'portal');
+  const [appMode, setAppMode] = useState<'portal' | 'app'>(isCustomerAppPath ? 'app' : 'portal');
 
   // Sync mode with browser URL bar
   const navigateToApp = () => {
     if (typeof window !== 'undefined' && window.history.pushState) {
-      const appPath = isDedicatedSacHost ? '/' : '/sacproh';
+      const appPath = isDedicatedSacHost ? '/' : '/app';
       window.history.pushState({ path: appPath }, '', appPath);
     }
     setAppMode('app');
@@ -79,7 +81,8 @@ export default function App() {
 
   useEffect(() => {
     const handlePopState = () => {
-      const isSac = isDedicatedSacHost || window.location.pathname.toLowerCase().includes('sacproh') || window.location.hash.toLowerCase().includes('sacproh');
+      const path = window.location.pathname.toLowerCase();
+      const isSac = isDedicatedSacHost || /^\/app\/?$/.test(path) || path.includes('sacproh') || window.location.hash.toLowerCase().includes('sacproh');
       setAppMode(isSac ? 'app' : 'portal');
     };
     window.addEventListener('popstate', handlePopState);
@@ -309,8 +312,9 @@ export default function App() {
   }
 
   // No host comercial, a raiz continua sendo a landing page. A rota
-  // /sacproh abre o aplicativo autenticado para trial e homologacao.
-  if (isSaasTrialHost && !isSacProhPath) {
+  // / é o site comercial, /app é o produto do cliente e /admin é a gestão GRIT.
+  // /sacproh permanece aceito apenas para preservar links antigos.
+  if (isSaasTrialHost && !isCustomerAppPath) {
     return <Suspense fallback={<ModuleLoading />}><SaasTrialPortal /></Suspense>;
   }
 
