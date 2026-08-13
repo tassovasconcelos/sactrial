@@ -501,7 +501,7 @@ export const apiService = {
   },
 
   async sendPasswordReset(email: string): Promise<void> {
-    const redirectTo = `${window.location.origin}/sacproh/`;
+    const redirectTo = `${window.location.origin}/app`;
     const { error } = await supabase.auth.resetPasswordForEmail(email, { redirectTo });
     if (error) {
       if (/rate limit|too many/i.test(error.message)) throw new Error('Usuário cadastrado, mas o limite temporário de e-mails do Supabase foi atingido. Aguarde antes de reenviar ou configure um servidor SMTP próprio.');
